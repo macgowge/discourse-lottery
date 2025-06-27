@@ -1,0 +1,4 @@
+plugins:
+  lottery_enabled:
+    default: false
+    client: true
