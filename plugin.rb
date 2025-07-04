@@ -1,11 +1,11 @@
-    # name: discourse-truman-lottery
-    # about: A Discourse plugin to create and manage lotteries.
-    # version: 1.0.9
-    # authors: Truman
-    # url: https://github.com/macgowge/discourse-truman-lottery
-    # required_version: 2.8.0.beta10
+# name: discourse-truman-lottery
+# about: Lottery plugin for Discourse
+# version: 0.1
+# authors: truman
+# url: https://github.com/macgowge/discourse-truman-lottery
 
-    # Rails.logger.info "LotteryPlugin: plugin.rb TOP LEVEL - File is being loaded."
+# 必须包含至少一个空行分隔元数据和代码
+
 
     enabled_site_setting :lottery_enabled
 
