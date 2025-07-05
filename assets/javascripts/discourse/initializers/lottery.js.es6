@@ -157,6 +157,7 @@ export default apiInitializer("1.0.1", (api) => {
               "X-CSRF-Token": token,
             },
             body: JSON.stringify({ lottery_id: lotteryId }),
+            credentials: "same-origin",
           });
 
           const data = await response.json();
