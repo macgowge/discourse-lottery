@@ -1,3 +1,8 @@
+plugins:
+  discourse-lottery:
+    enabled: true
+
 lottery_enabled:
-  default: false
+  default: true
   client: true
+  type: bool
