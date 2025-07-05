@@ -166,8 +166,8 @@ export default apiInitializer("1.0.1", (api) => {
           messageArea.className = "lottery-message-area lottery-processing";
 
           try {
-            const csrfService = api.container.lookup("service:csrf");
-            const token = csrfService ? csrfService.token : null;
+            // 使用 Discourse 推荐方式直接用 window._csrf_token
+            const token = window._csrf_token;
 
             if (!token) {
               throw new Error(I18n.t("js.lottery.csrf_token_error"));
