@@ -8,13 +8,12 @@ import I18n from "I18n"; // 确保导入 I18n
 // import { h } from "virtual-dom"; // 如果需要用 virtual-dom 创建元素
 
 export default apiInitializer("1.0.1", (api) => { // 版本化您的初始化器
-  // 使用 Discourse 的模态服务显示警报的辅助函数
+  // 使用 Discourse 的 bootbox 显示警报的辅助函数
   const showAlert = (message, type = 'error') => {
-    const modal = api.container.lookup("service:modal");
-    if (modal && modal.alert) {
-      modal.alert({ message, type }); // type 可以是 'error', 'success', 'warning'
+    if (window.bootbox && window.bootbox.alert) {
+      window.bootbox.alert({ message });
     } else {
-      window.alert(message); // 回退
+      window.alert(message);
     }
   };
 
@@ -123,17 +122,23 @@ export default apiInitializer("1.0.1", (api) => { // 版本化您的初始化器
 
       const messageArea = document.createElement("div");
       messageArea.className = "lottery-message-area";
-      // container.appendChild(messageArea); // 移动到按钮之后添加
 
       button.addEventListener("click", async () => {
         if (cost > 0) {
-          const modal = api.container.lookup("service:modal");
-          modal.confirm({
-            message: I18n.t("js.lottery.confirm_cost_participation", { cost }),
-            didConfirm: async () => {
+          if (window.bootbox && window.bootbox.confirm) {
+            window.bootbox.confirm({
+              message: I18n.t("js.lottery.confirm_cost_participation", { cost }),
+              callback: async function (result) {
+                if (result) {
+                  await tryJoinLottery();
+                }
+              }
+            });
+          } else {
+            if (window.confirm(I18n.t("js.lottery.confirm_cost_participation", { cost }))) {
               await tryJoinLottery();
             }
-          });
+          }
         } else {
           await tryJoinLottery();
         }
@@ -145,12 +150,10 @@ export default apiInitializer("1.0.1", (api) => { // 版本化您的初始化器
         messageArea.className = "lottery-message-area lottery-processing";
 
         try {
-          // 使用 api.container.lookup("service:csrf").token 获取 CSRF token
-          const csrfService = api.container.lookup("service:csrf");
-          const token = csrfService ? csrfService.token : null;
+          // 使用 Discourse 推荐方式直接用 window._csrf_token
+          const token = window._csrf_token;
 
           if (!token) {
-            // 这个错误消息最好也通过 I18n 处理
             throw new Error(I18n.t("js.lottery.csrf_token_error"));
           }
 
@@ -182,7 +185,6 @@ export default apiInitializer("1.0.1", (api) => { // 版本化您的初始化器
             showAlert(errorMessage, 'error');
             messageArea.textContent = errorMessage;
             messageArea.className = "lottery-message-area lottery-error";
-            // 只有在不是因为“已参与”或“已满”的错误时才重新启用按钮
             if (response.status !== 403 && response.status !== 422 && !(data.error && data.error.includes(I18n.t("lottery.errors.already_participated")))) {
                  button.disabled = false;
             }
@@ -198,13 +200,10 @@ export default apiInitializer("1.0.1", (api) => { // 版本化您的初始化器
       }
 
       lotteryBox.appendChild(container);
-      // 仅当抽奖尚未满员时才添加按钮
-      // 并且，如果服务器端逻辑正确，用户不应该看到按钮如果他们已经参与 (这需要更复杂的 has_entered 逻辑)
       if (! (maxEntries && currentEntries >= maxEntries) ) {
         container.appendChild(button);
       }
-      container.appendChild(messageArea); // 消息区域在按钮之后
-
+      container.appendChild(messageArea);
     }
   }, {
     id: 'discourse-lottery-decorator',
