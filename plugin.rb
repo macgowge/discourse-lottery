@@ -1,4 +1,3 @@
-# frozen_string_literal: true
 # name: discourse-lottery
 # about: Lottery plugin for Discourse
 # version: 0.1
