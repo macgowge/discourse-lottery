@@ -1,9 +1,4 @@
 plugins:
-  discourse-lottery:
-    default: true
-    enabled: true
-
-lottery_enabled:
-  default: true
-  client: true
-  type: bool
+  lottery_enabled:
+    default: false
+    client: true
