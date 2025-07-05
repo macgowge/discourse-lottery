@@ -2,6 +2,7 @@ module LotteryPlugin
   class EntriesController < ::ApplicationController
     requires_plugin LotteryPlugin::PLUGIN_NAME # 使用常量指定插件名称
     before_action :ensure_logged_in # 用户必须登录才能参与
+    protect_from_forgery with: :exception
 
     def create
       lottery = LotteryPlugin::Lottery.find_by(id: params[:lottery_id])
