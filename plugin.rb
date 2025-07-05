@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # name: discourse-truman-lottery
 # about: Lottery plugin for Discourse
 # version: 0.1
