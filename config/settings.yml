@@ -1,3 +1,4 @@
 lottery_enabled:
   default: false
   client: true
+  title: "是否启用抽奖功能"
