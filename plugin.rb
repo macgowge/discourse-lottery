@@ -1,9 +1,9 @@
 # frozen_string_literal: true
-# name: discourse-truman-lottery
+# name: discourse-lottery
 # about: Lottery plugin for Discourse
 # version: 0.1
 # authors: truman
-# url: https://github.com/macgowge/discourse-truman-lottery
+# url: https://github.com/macgowge/discourse-lottery
 
 enabled_site_setting :lottery_enabled
 
