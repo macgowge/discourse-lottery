@@ -1,5 +1,5 @@
 {
-  "name": "discourse-truman-lottery",
+  "name": "discourse-lottery",
   "devDependencies": {
     "ember-cli": "~6.5.0",
     "ember-data": "~4.12.0"
